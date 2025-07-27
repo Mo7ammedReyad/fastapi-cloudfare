@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Server Health Status</title>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: Arial, sans-serif; background: #f6f6f6; text-align: center; padding: 50px; }
+    h1 { font-size: 2rem; }
+    #status { font-size: 1.5rem; color: green; }
+  </style>
+</head>
+<body>
+  <h1>🩺 Server Health Status</h1>
+  <p id="status">Checking...</p>
+
+  <script>
+    const SERVER_URL = 'https://fastapi-health.pages.dev/health'; // غيّر دا بالرابط بتاعك بعد النشر
+
+    async function checkHealth() {
+      try {
+        const res = await fetch(SERVER_URL);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        document.getElementById("status").textContent = "✅ " + data.status;
+        document.getElementById("status").style.color = "green";
+      } catch (err) {
+        document.getElementById("status").textContent = "❌ OFFLINE";
+        document.getElementById("status").style.color = "red";
+      }
+    }
+
+    setInterval(checkHealth, 5000);
+    checkHealth();
+  </script>
+</body>
+</html>
